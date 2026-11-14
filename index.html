@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#8b5cf6">
+<title>מסע במערכת הצירים</title>
+<style>
+:root{font-family:Arial,"Rubik",sans-serif;color:#282044;background:#f6f3ff;--purple:#7652d5;--pink:#ef6aa8;--ink:#282044;--muted:#77718c;--line:#e7e1f4;--green:#188653;--red:#bd3b52}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 8% 5%,#ffe4f0 0,transparent 28%),radial-gradient(circle at 96% 25%,#e7e0ff 0,transparent 30%),#f8f6ff}.shell{width:min(920px,100%);margin:auto;padding:20px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;background:#ffffffdd;border:1px solid var(--line);border-radius:20px;box-shadow:0 8px 25px #35245b0c}.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}.brand-icon{font-size:28px}.score-pill{background:#fff3cf;border-radius:999px;padding:9px 14px;font-weight:800}.card{margin-top:18px;padding:clamp(18px,4vw,32px);background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 12px 35px #35245b12}.intro{text-align:center}.eyebrow{color:var(--purple);font-weight:bold;letter-spacing:.03em}.intro h1{font-size:clamp(30px,6vw,46px);margin:10px 0}.intro p{max-width:650px;margin:0 auto 20px;color:var(--muted);line-height:1.7}.primary,.answer,.next,.restart{font:inherit;font-weight:bold;border:0;border-radius:14px;padding:13px 18px;cursor:pointer;transition:transform .15s,filter .15s}.primary,.next,.restart{background:var(--purple);color:white}.primary:hover,.next:hover,.restart:hover,.answer:hover:not(:disabled){filter:brightness(1.04);transform:translateY(-2px)}.game-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}.progress-wrap{flex:1}.progress-label{display:flex;justify-content:space-between;font-size:14px;color:var(--muted);margin-bottom:7px}.progress{height:10px;background:#eeeaf6;border-radius:99px;overflow:hidden}.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink));transition:width .3s}.question-card{padding:20px;background:#fbfaff;border:1px solid #eee9f8;border-radius:18px;text-align:center}.kind{color:var(--purple);font-weight:bold}.prompt{font-size:clamp(21px,4vw,29px);font-weight:750;line-height:1.45;margin:12px 0 18px}.graph{display:block;width:min(100%,360px);height:auto;margin:8px auto 16px;background:#fff;border:1px solid var(--line);border-radius:15px}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;max-width:620px;margin:18px auto 0}.answer{background:#fff;color:var(--ink);border:2px solid #e8e2f2;font-size:18px;min-height:52px}.answer:disabled{cursor:default;transform:none}.answer.correct{background:#e5f7ed;border-color:#76c99b;color:#12643e}.answer.incorrect{background:#fff0f0;border-color:#ed9ca7;color:#9e2439}.feedback{min-height:30px;font-weight:bold;margin:13px 0 0}.actions{display:flex;justify-content:center;margin-top:8px}.next:disabled{opacity:.45;cursor:not-allowed}.end{text-align:center}.end .trophy{font-size:64px}.end h2{font-size:30px}.final-score{display:inline-block;margin:12px;background:#fff3cf;border-radius:14px;padding:12px 18px;font-size:20px;font-weight:bold}.hidden{display:none!important}.stars{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}.star{position:absolute;left:var(--x);top:var(--y);font-size:var(--size);animation:fly .95s ease-out forwards}@keyframes fly{0%{opacity:0;transform:translateY(12px) scale(.3)}15%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(35deg)}}.hint{color:var(--muted);font-size:14px;margin-top:12px}.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}@media(max-width:560px){.shell{padding:12px}.top{padding:12px}.brand{font-size:16px}.answers{grid-template-columns:1fr}.answer{min-height:48px}.question-card{padding:15px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<header class="top"><div class="brand"><span class="brand-icon">📍</span><span>מסע במערכת הצירים</span></div><div class="score-pill">⭐ ניקוד: <span id="score">0</span></div></header>
+<main>
+<section class="card intro" id="intro"><div class="eyebrow">משחק מתמטיקה · כיתה ז׳</div><h1>מוכנים לצאת לדרך? 🗺️</h1><p>עשר שאלות קצרות על מערכת הצירים: קריאת נקודות, רביעים, מרחקים, סימטריה ותנועה במישור. צוברים כוכב על כל תשובה נכונה!</p><button class="primary" id="start">מתחילים לשחק</button><div class="hint">זוכרים? כותבים קואורדינטות בסדר <span class="ltr">(x, y)</span>.</div></section>
+<section class="card hidden" id="game"><div class="game-head"><div class="progress-wrap"><div class="progress-label"><span id="counter">שאלה 1 מתוך 10</span><span>המסע שלך</span></div><div class="progress"><div id="bar"></div></div></div></div><div class="question-card"><div class="kind" id="kind"></div><div class="prompt" id="prompt"></div><div id="visual"></div><div class="answers" id="answers"></div><div class="feedback" id="feedback" aria-live="polite"></div><div class="actions"><button class="next" id="next" disabled>לשאלה הבאה ←</button></div></div></section>
+<section class="card end hidden" id="end"><div class="trophy" id="trophy">🏆</div><div class="eyebrow">המסע הושלם!</div><h2 id="end-title">כל הכבוד!</h2><p id="end-message"></p><div class="final-score" id="final-score"></div><p><button class="restart" id="restart">לשחק שוב ↻</button></p></section>
+</main>
+</div><div class="stars" id="stars" aria-hidden="true"></div>
+<script>
+(()=>{
+ 'use strict';
+ const questions=[
+  {kind:'קריאת נקודה',prompt:'מהן הקואורדינטות של הנקודה A?',point:{x:3,y:-2,label:'A'},options:['(3, -2)','(-2, 3)','(3, 2)','(-3, -2)'],answer:'(3, -2)',explain:'מתחילים ב־x: שלוש ימינה, ואז y: שתי יחידות למטה.'},
+  {kind:'רביעים',prompt:'באיזה רביע נמצאת הנקודה B?',point:{x:-4,y:3,label:'B'},options:['רביע ראשון','רביע שני','רביע שלישי','רביע רביעי'],answer:'רביע שני',explain:'בנקודה B ערך x שלילי וערך y חיובי, ולכן היא ברביע השני.'},
+  {kind:'מיקום נקודה',prompt:'נקודה C נמצאת 2 יחידות שמאלה ו־4 יחידות למטה מראשית הצירים. מהן הקואורדינטות שלה?',options:['(-2, -4)','(2, -4)','(-4, -2)','(2, 4)'],answer:'(-2, -4)',explain:'שמאלה פירושו x שלילי; למטה פירושו y שלילי.'},
+  {kind:'נקודה על ציר',prompt:'הנקודה D נמצאת על ציר x, והערך שלה על הציר הוא 5. מהן הקואורדינטות שלה?',options:['(5, 0)','(0, 5)','(-5, 0)','(5, 5)'],answer:'(5, 0)',explain:'בכל נקודה על ציר x, ערך y הוא 0.'},
+  {kind:'מרחק אופקי',prompt:'לנקודות E ו־F יש אותו ערך y. מה המרחק האופקי ביניהן?',point:{x1:-3,y1:2,x2:4,y2:2,label1:'E',label2:'F'},options:['1 יחידה','7 יחידות','4 יחידות','5 יחידות'],answer:'7 יחידות',explain:'על אותו קו אופקי: המרחק הוא ההפרש בין ערכי x, כלומר 4 − (−3) = 7.'},
+  {kind:'מרחק אנכי',prompt:'מה המרחק בין הנקודות G ו־H?',point:{x1:2,y1:-3,x2:2,y2:4,label1:'G',label2:'H'},options:['1 יחידה','5 יחידות','7 יחידות','8 יחידות'],answer:'7 יחידות',explain:'על אותו קו אנכי: המרחק הוא 4 − (−3) = 7 יחידות.'},
+  {kind:'סימטריה',prompt:'הנקודה P(3, −2) משתקפת מעבר לציר y. מהן הקואורדינטות של הנקודה החדשה?',options:['(-3, -2)','(3, 2)','(-3, 2)','(3, -2)'],answer:'(-3, -2)',explain:'שיקוף בציר y מחליף את הסימן של x ומשאיר את y ללא שינוי.'},
+  {kind:'השלמת מלבן',prompt:'שלושה קודקודים של מלבן הם A(−2, 1), B(3, 1), C(3, 4). מהו הקודקוד הרביעי?',options:['(-2, 4)','(3, -2)','(2, 4)','(-2, 1)'],answer:'(-2, 4)',explain:'הקודקוד הרביעי חולק את ערך x של A ואת ערך y של C.'},
+  {kind:'תנועה במישור',prompt:'הנקודה T(−2, 1) זזה 4 יחידות ימינה ו־3 יחידות למטה. היכן היא עכשיו?',options:['(2, -2)','(-6, 4)','(2, 4)','(-6, -2)'],answer:'(2, -2)',explain:'x: ‏−2 + 4 = 2. ‏y: ‏1 − 3 = −2.'},
+  {kind:'תבנית וקו',prompt:'הנקודות J(1, 4), K(2, 4), L(3, 4) מסומנות במערכת הצירים. מה נכון?',options:['כולן על קו אופקי שבו y = 4','כולן על קו אנכי שבו x = 4','כולן בראשית הצירים','כולן ברביע הרביעי'],answer:'כולן על קו אופקי שבו y = 4',explain:'לשלוש הנקודות אותו ערך y, לכן הן נמצאות על אותו קו אופקי.'}
+ ];
+ let index=0,score=0,answered=false;
+ const $=id=>document.getElementById(id);
+ function svgPoint(x,y,label,color='#7652d5'){
+  const px=180+x*28,py=180-y*28;
+  return `<circle cx="${px}" cy="${py}" r="7" fill="${color}" stroke="white" stroke-width="2"/><text x="${px+10}" y="${py-9}" font-size="15" font-weight="bold" fill="#282044">${label}</text>`;
+ }
+ function graphSvg(points){
+  const size=360,step=28,lines=[];
+  for(let n=-5;n<=5;n++){const pos=180+n*step;lines.push(`<line x1="${pos}" y1="20" x2="${pos}" y2="340" stroke="#e9e5f1" stroke-width="1"/>`,`<line x1="20" y1="${pos}" x2="340" y2="${pos}" stroke="#e9e5f1" stroke-width="1"/>`);if(n!==0){lines.push(`<text x="${pos}" y="196" font-size="11" text-anchor="middle" fill="#77718c">${n}</text>`,`<text x="164" y="${180-n*step+4}" font-size="11" text-anchor="end" fill="#77718c">${n}</text>`);}}
+  const axes='<line x1="20" y1="180" x2="342" y2="180" stroke="#514767" stroke-width="2"/><line x1="180" y1="340" x2="180" y2="18" stroke="#514767" stroke-width="2"/><path d="M342 180l-8-4v8zM180 18l-4 8h8z" fill="#514767"/><text x="346" y="174" font-size="14" font-weight="bold">x</text><text x="188" y="17" font-size="14" font-weight="bold">y</text>';
+  return `<svg class="graph" viewBox="0 0 ${size} ${size}" role="img" aria-label="מערכת צירים עם נקודות מסומנות">${lines.join('')}${axes}${points.map(p=>svgPoint(p.x,p.y,p.label,p.color)).join('')}</svg>`;
+ }
+ function drawQuestion(){
+  const q=questions[index];answered=false;
+  $('counter').textContent=`שאלה ${index+1} מתוך ${questions.length}`;$('bar').style.width=`${index/questions.length*100}%`;$('score').textContent=score;
+  $('kind').textContent=q.kind;$('prompt').textContent=q.prompt;$('feedback').textContent='';$('feedback').style.color='';$('next').disabled=true;
+  let visual='';if(q.point)visual=graphSvg([q.point]);else if(q.point1&&q.point2)visual=graphSvg([q.point1,q.point2]);else if(q.kind==='מרחק אופקי')visual=graphSvg([{x:q.point.x1,y:q.point.y1,label:q.point.label1},{x:q.point.x2,y:q.point.y2,label:q.point.label2}]);else if(q.kind==='מרחק אנכי')visual=graphSvg([{x:q.point.x1,y:q.point.y1,label:q.point.label1},{x:q.point.x2,y:q.point.y2,label:q.point.label2}]);
+  $('visual').innerHTML=visual;
+  const answers=$('answers');answers.replaceChildren();const shuffled=[...q.options].sort(()=>Math.random()-.5);
+  shuffled.forEach(option=>{const button=document.createElement('button');button.type='button';button.className='answer';button.textContent=option;button.addEventListener('click',()=>chooseAnswer(button,option));answers.append(button);});
+ }
+ function starBurst(){const root=$('stars');root.replaceChildren();for(let i=0;i<22;i++){const el=document.createElement('span');el.className='star';el.textContent=['⭐','✨','🌟'][i%3];el.style.setProperty('--x',`${Math.random()*100}%`);el.style.setProperty('--y',`${35+Math.random()*55}%`);el.style.setProperty('--size',`${16+Math.random()*23}px`);el.style.setProperty('--dx',`${(Math.random()-.5)*140}px`);el.style.setProperty('--dy',`${-40-Math.random()*130}px`);root.append(el);}setTimeout(()=>root.replaceChildren(),1100);}
+ function chooseAnswer(button,option){if(answered)return;answered=true;const q=questions[index],correct=option===q.answer;$('answers').querySelectorAll('button').forEach(b=>{b.disabled=true;if(b.textContent===q.answer)b.classList.add('correct');});if(correct){score++;$('feedback').textContent=`נכון! ${q.explain}`;$('feedback').style.color='var(--green)';starBurst();}else{button.classList.add('incorrect');$('feedback').textContent=`כמעט! ${q.explain}`;$('feedback').style.color='var(--red)';}$('score').textContent=score;$('next').disabled=false;$('next').textContent=index===questions.length-1?'לסיום 🏁':'לשאלה הבאה ←';}
+ function finish(){ $('game').classList.add('hidden');$('end').classList.remove('hidden');$('bar').style.width='100%';$('final-score').textContent=`⭐ ${score} מתוך ${questions.length} כוכבים`;const good=score>=7;$('trophy').textContent=good?'🏆':'💪';$('end-title').textContent=good?'איזה יופי! את אלופת הצירים!':'כל הכבוד על המאמץ!';$('end-message').textContent=good?'פתרת מצוין את שאלות מערכת הצירים.':'כדאי לעבור שוב על השאלות ולנסות פעם נוספת.';}
+ $('start').addEventListener('click',()=>{$('intro').classList.add('hidden');$('end').classList.add('hidden');$('game').classList.remove('hidden');index=0;score=0;drawQuestion();});
+ $('next').addEventListener('click',()=>{if(!answered)return;if(index<questions.length-1){index++;drawQuestion();}else finish();});
+ $('restart').addEventListener('click',()=>{$('end').classList.add('hidden');$('intro').classList.remove('hidden');});
+ drawQuestion();
+})();
+</script>
+</body>
+</html>
